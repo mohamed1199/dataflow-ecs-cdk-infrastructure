@@ -60,8 +60,8 @@ export class DataflowEcsFargateStack extends cdk.Stack {
       this.kafkaClientEnvs(mskCluster.bootstrapBrokers),
       cloudMapNamespace, "kafka", nlb);
 
-    //deploy App stream 
-    this.deployAppStream(myvpc, myCluster);
+    //deploy App stream containers
+    this.deployAppStream();
 
     skipperService.node.addDependency(mskCluster);
     skipperService.node.addDependency(rdsDB);
@@ -289,7 +289,7 @@ export class DataflowEcsFargateStack extends cdk.Stack {
     return envs;
   }
 
-  private deployAppStream(myvpc: IVpc, myCluster: Cluster) {
+  private deployAppStream() {
 
 
     const taskDef = new FargateTaskDefinition(this, "app-stream-td", {
