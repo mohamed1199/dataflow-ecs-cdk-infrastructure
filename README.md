@@ -1,6 +1,6 @@
 # AWS CDK Project for Deploying Spring Dataflow Microservices
 
-![Alt text](images/dataflow.jpg?raw=true "infra architecture")
+![Alt text](images/dataflow-arch1.jpg?raw=true "infra architecture")
 
 ## Prerequisites
 
