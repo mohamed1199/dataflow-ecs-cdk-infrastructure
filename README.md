@@ -2,9 +2,11 @@
 
 ![Alt text](images/arch1.jpg?raw=true "infra architecture")
 
-## About the Architecture
+# The infrastructure from network perspective
 
 ![Alt text](images/arch2.jpg?raw=true "infra architecture")
+
+## About the Architecture
 
 The following AWS architecture consists of two public subnets, each deployed in a different Availability Zone (AZ) and associated with a Network Load Balancer (NLB) and two NAT Gateways. There are also two private subnets associated with an ECS cluster, an Amazon Managed Streaming for Apache Kafka (MSK) cluster, and a Relational Database Service (RDS) instance.
 
