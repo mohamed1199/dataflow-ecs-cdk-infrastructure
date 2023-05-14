@@ -2,6 +2,22 @@
 
 ![Alt text](images/arch1.jpg?raw=true "infra architecture")
 
+## About the Architecture
+
+![Alt text](images/arch2.jpg?raw=true "infra architecture")
+
+The following AWS architecture consists of two public subnets, each deployed in a different Availability Zone (AZ) and associated with a Network Load Balancer (NLB) and two NAT Gateways. There are also two private subnets associated with an ECS cluster, an Amazon Managed Streaming for Apache Kafka (MSK) cluster, and a Relational Database Service (RDS) instance.
+
+The public subnets host the NLB and NAT Gateways, which provide connectivity to the Internet and enable the private subnets to communicate with external services such as ECR, CloudWatch or other AWS resources. 
+
+The NLB distributes incoming traffic to a pool of target instances running in the private subnets. 
+
+The NAT Gateways allow instances in the private subnet to access the Internet while keeping them protected from direct Internet traffic.
+
+The private subnets host the ECS tasks, MSK cluster, and RDS instance. The ECS tasks are launched in a containerized environment using Amazon ECS Fargate.
+
+The architecture is designed for high availability and fault tolerance. By deploying the public subnets in different AZs, the architecture ensures that there is no single point of failure. If one AZ experiences an outage, the other AZ can continue to provide services.
+
 ## Prerequisites
 
 Before deploying this project, make sure you have the following prerequisites:
