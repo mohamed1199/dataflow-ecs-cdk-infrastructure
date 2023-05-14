@@ -15,11 +15,10 @@ export interface DataflowStackProps extends cdk.StackProps {
     credentials: Secret;
     rdsEndpoint: string;
     brokers: string;
+    securityGroup: SecurityGroup;
 }
 
 export class DataflowStack extends cdk.Stack {
-
-    public readonly securityGroup: SecurityGroup;
 
     constructor(scope: Construct, id: string, props: DataflowStackProps) {
         super(scope, id, props);
@@ -27,19 +26,7 @@ export class DataflowStack extends cdk.Stack {
         const cluster = props.cluster;
         const nlb = props.nlb;
         const namespace = props.namespace;
-
-        this.securityGroup = new SecurityGroup(this, "dataflow-sg", {
-            vpc: vpc,
-            allowAllOutbound: true,
-            securityGroupName: "dataflow-sg"
-        });
-        this.securityGroup.addIngressRule(Peer.anyIpv4(), Port.tcp(9393));
-        this.securityGroup.addIngressRule(Peer.anyIpv4(), Port.tcp(9393 + 2));
-
-        new cdk.CfnOutput(this, 'dataflowSg', {
-            value: this.securityGroup.securityGroupId,
-            exportName: 'dataflowSg'
-        });
+        const securityGroup = props.securityGroup;
 
         const taskDef = new FargateTaskDefinition(this, "dataflow-td", {
             cpu: 512,
@@ -74,7 +61,7 @@ export class DataflowStack extends cdk.Stack {
             vpcSubnets: vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
             serviceName: "dataflow-service",
             assignPublicIp: false,
-            securityGroups: [this.securityGroup],
+            securityGroups: [securityGroup],
             serviceConnectConfiguration: {
                 namespace: namespace.namespaceName,
                 services: [{

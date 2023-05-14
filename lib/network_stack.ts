@@ -1,5 +1,5 @@
 import * as cdk from 'aws-cdk-lib';
-import { SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
+import { Peer, Port, SecurityGroup, SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
 import { Cluster } from 'aws-cdk-lib/aws-ecs';
 import { NetworkLoadBalancer } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { PrivateDnsNamespace } from 'aws-cdk-lib/aws-servicediscovery';
@@ -11,6 +11,10 @@ export class NetworkStack extends cdk.Stack {
     public readonly cluster: Cluster;
     public readonly namespace: PrivateDnsNamespace;
     public readonly nlb: NetworkLoadBalancer;
+    public readonly dataflowSG: SecurityGroup;
+    public readonly kafkaClientSG: SecurityGroup;
+    public readonly mskSG: SecurityGroup;
+
 
     constructor(scope: Construct, id: string, props: cdk.StackProps) {
         super(scope, id, props);
@@ -52,5 +56,29 @@ export class NetworkStack extends cdk.Stack {
             internetFacing: true,
             vpcSubnets: this.vpc.selectSubnets({ subnetType: SubnetType.PUBLIC })
         });
+
+        this.dataflowSG = new SecurityGroup(this, "dataflow-sg", {
+            vpc: this.vpc,
+            allowAllOutbound: true,
+            securityGroupName: "dataflow-sg"
+        });
+        this.dataflowSG.addIngressRule(Peer.anyIpv4(), Port.tcp(9393));
+        this.dataflowSG.addIngressRule(Peer.anyIpv4(), Port.tcp(9393 + 2));
+
+        this.kafkaClientSG = new SecurityGroup(this, "kafkaClient-sg", {
+            vpc: this.vpc,
+            allowAllOutbound: true,
+            securityGroupName: "kafkaClient-sg"
+        });
+        this.kafkaClientSG.addIngressRule(Peer.anyIpv4(), Port.tcp(8080));
+
+        this.mskSG = new SecurityGroup(this, 'msk-sg', {
+            securityGroupName: 'msk-sg',
+            vpc: this.vpc,
+            allowAllOutbound: true
+        });
+
+        this.mskSG.addIngressRule(Peer.securityGroupId(this.dataflowSG.securityGroupId), Port.tcp(9092));
+        this.mskSG.addIngressRule(Peer.securityGroupId(this.kafkaClientSG.securityGroupId), Port.tcp(9092));
     }
 }

@@ -10,11 +10,7 @@ import { Construct } from 'constructs';
 export interface AppStreamStackProps extends cdk.StackProps {
     vpc: Vpc;
     cluster: Cluster;
-    nlb: NetworkLoadBalancer;
     namespace: PrivateDnsNamespace;
-    credentials: Secret;
-    rdsEndpoint: string;
-    brokers: string;
 }
 
 export class AppStreamStack extends cdk.Stack {
@@ -23,9 +19,9 @@ export class AppStreamStack extends cdk.Stack {
         super(scope, id, props);
         const vpc = props.vpc;
         const cluster = props.cluster;
+        const namespace = props.namespace;
 
-
-        const taskDef = new FargateTaskDefinition(this, "dataflow-td", {
+        const taskDef = new FargateTaskDefinition(this, "appstream-td", {
             cpu: 512,
             memoryLimitMiB: 2048,
         });
@@ -71,6 +67,9 @@ export class AppStreamStack extends cdk.Stack {
             vpcSubnets: vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
             serviceName: "app-stream-service",
             assignPublicIp: false,
+            serviceConnectConfiguration: {
+                namespace: namespace.namespaceName,
+            },
         });
     }
 }

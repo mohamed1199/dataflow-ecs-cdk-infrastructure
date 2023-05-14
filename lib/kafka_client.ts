@@ -14,11 +14,10 @@ export interface KafkaClientStackProps extends cdk.StackProps {
     nlb: NetworkLoadBalancer;
     namespace: PrivateDnsNamespace;
     brokers: string;
+    securityGroup: SecurityGroup;
 }
 
 export class KafkaClientStack extends cdk.Stack {
-
-    public readonly securityGroup: SecurityGroup;
 
     constructor(scope: Construct, id: string, props: KafkaClientStackProps) {
         super(scope, id, props);
@@ -26,19 +25,7 @@ export class KafkaClientStack extends cdk.Stack {
         const cluster = props.cluster;
         const nlb = props.nlb;
         const namespace = props.namespace;
-
-
-        this.securityGroup = new SecurityGroup(this, "kafkaClient-sg", {
-            vpc: vpc,
-            allowAllOutbound: true,
-            securityGroupName: "kafkaClient-sg"
-        });
-        this.securityGroup.addIngressRule(Peer.anyIpv4(), Port.tcp(8080));
-
-        new cdk.CfnOutput(this, 'kafkaClientSg', {
-            value: this.securityGroup.securityGroupId,
-            exportName: 'kafkaClientSg'
-        });
+        const securityGroup = props.securityGroup;
 
         const taskDef = new FargateTaskDefinition(this, "kafkaClient-td", {
             cpu: 256,
@@ -73,7 +60,7 @@ export class KafkaClientStack extends cdk.Stack {
             vpcSubnets: vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
             serviceName: "kafkaClient-service",
             assignPublicIp: false,
-            securityGroups: [this.securityGroup],
+            securityGroups: [securityGroup],
             serviceConnectConfiguration: {
                 namespace: namespace.namespaceName,
                 services: [{

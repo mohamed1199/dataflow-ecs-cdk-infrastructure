@@ -8,6 +8,7 @@ import * as msk from "@aws-cdk/aws-msk-alpha";
 
 export interface MskClusterStackProps extends cdk.StackProps {
   vpc: Vpc;
+  securityGroup: SecurityGroup;
 }
 
 export class MskClusterStack extends cdk.Stack {
@@ -18,18 +19,7 @@ export class MskClusterStack extends cdk.Stack {
     super(scope, id, props);
 
     const vpc = props.vpc;
-
-    const dataflowSG = cdk.Fn.importValue('dataflowSg');
-    const kafkaClientSG = cdk.Fn.importValue('kafkaClientSg');
-
-    const mskSG = new SecurityGroup(this, 'msk-sg', {
-      securityGroupName: 'msk-sg',
-      vpc: vpc,
-      allowAllOutbound: true
-    });
-
-    mskSG.addIngressRule(Peer.securityGroupId(dataflowSG), Port.tcp(9393));
-    mskSG.addIngressRule(Peer.securityGroupId(kafkaClientSG), Port.tcp(8080));
+    const securityGroup = props.securityGroup;
 
     const mskCluster = new msk.Cluster(this, 'MskCluster', {
       clusterName: 'MskCluster',
@@ -43,7 +33,7 @@ export class MskClusterStack extends cdk.Stack {
         volumeSize: 5
       },
       instanceType: InstanceType.of(InstanceClass.T3, InstanceSize.SMALL),
-      securityGroups: [mskSG],
+      securityGroups: [securityGroup],
       vpcSubnets: vpc.selectSubnets({ subnetType: SubnetType.PRIVATE_WITH_EGRESS }),
     });
 
