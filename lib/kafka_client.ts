@@ -40,7 +40,6 @@ export class KafkaClientStack extends cdk.Stack {
             logging: new AwsLogDriver({
                 streamPrefix: "kafkaClient-logs",
             }),
-
             portMappings: [
                 {
                     containerPort: 8080,
@@ -63,11 +62,6 @@ export class KafkaClientStack extends cdk.Stack {
             securityGroups: [securityGroup],
             serviceConnectConfiguration: {
                 namespace: namespace.namespaceName,
-                services: [{
-                    portMappingName: "kafka-client-pm",
-                    dnsName: "kafka-service",
-                    port: 8080 + 2, //service-connect service port
-                }],
             },
         });
 
