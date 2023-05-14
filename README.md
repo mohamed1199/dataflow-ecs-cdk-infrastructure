@@ -21,5 +21,5 @@ To deploy the infrastructure, follow these steps:
    * Run `npm install` to install the dependencies.
    * Configure your AWS credentials by running aws configure.
    * Run `cdk bootstrap` to create the required resources in your AWS account.
-   * Run `cdk deploy` to deploy the infrastructure.
+   * Run `cdk deploy --all --require-approval never` to deploy the infrastructure.
 
