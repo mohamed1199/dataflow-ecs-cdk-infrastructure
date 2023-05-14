@@ -21,7 +21,6 @@ export class DataflowEcsFargateStack extends cdk.Stack {
 
   private deployAppStream() {
 
-
     const taskDef = new FargateTaskDefinition(this, "app-stream-td", {
       cpu: 256,
       memoryLimitMiB: 512,

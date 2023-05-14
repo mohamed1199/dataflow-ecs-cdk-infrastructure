@@ -35,6 +35,11 @@ export class KafkaClientStack extends cdk.Stack {
         });
         this.securityGroup.addIngressRule(Peer.anyIpv4(), Port.tcp(8080));
 
+        new cdk.CfnOutput(this, 'kafkaClientSg', {
+            value: this.securityGroup.securityGroupId,
+            exportName: 'kafkaClientSg'
+        });
+
         const taskDef = new FargateTaskDefinition(this, "kafkaClient-td", {
             cpu: 256,
             memoryLimitMiB: 512,

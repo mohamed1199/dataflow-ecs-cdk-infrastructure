@@ -50,15 +50,15 @@ const kafkaClient = new KafkaClientStack(app, "KafkaClientStack", {
   brokers: msk.brokers
 });
 
-dataflow.node.addDependency(skipper);
-dataflow.node.addDependency(rds);
-dataflow.node.addDependency(msk);
+dataflow.addDependency(skipper);
+dataflow.addDependency(rds);
+dataflow.addDependency(msk);
 
-skipper.node.addDependency(rds);
-skipper.node.addDependency(msk);
+skipper.addDependency(rds);
+skipper.addDependency(msk);
 
-kafkaClient.node.addDependency(rds);
-kafkaClient.node.addDependency(msk);
+kafkaClient.addDependency(rds);
+kafkaClient.addDependency(msk);
 
 
 

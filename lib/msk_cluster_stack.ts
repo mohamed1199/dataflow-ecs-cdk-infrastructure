@@ -19,11 +19,17 @@ export class MskClusterStack extends cdk.Stack {
 
     const vpc = props.vpc;
 
+    const dataflowSG = cdk.Fn.importValue('dataflowSg');
+    const kafkaClientSG = cdk.Fn.importValue('kafkaClientSg');
+
     const mskSG = new SecurityGroup(this, 'msk-sg', {
       securityGroupName: 'msk-sg',
       vpc: vpc,
       allowAllOutbound: true
     });
+
+    mskSG.addIngressRule(Peer.securityGroupId(dataflowSG), Port.tcp(9393));
+    mskSG.addIngressRule(Peer.securityGroupId(kafkaClientSG), Port.tcp(8080));
 
     const mskCluster = new msk.Cluster(this, 'MskCluster', {
       clusterName: 'MskCluster',

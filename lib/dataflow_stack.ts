@@ -36,6 +36,11 @@ export class DataflowStack extends cdk.Stack {
         this.securityGroup.addIngressRule(Peer.anyIpv4(), Port.tcp(9393));
         this.securityGroup.addIngressRule(Peer.anyIpv4(), Port.tcp(9393 + 2));
 
+        new cdk.CfnOutput(this, 'dataflowSg', {
+            value: this.securityGroup.securityGroupId,
+            exportName: 'dataflowSg'
+        });
+
         const taskDef = new FargateTaskDefinition(this, "dataflow-td", {
             cpu: 512,
             memoryLimitMiB: 2048,
