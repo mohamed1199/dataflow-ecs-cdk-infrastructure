@@ -1,8 +1,5 @@
 import * as cdk from 'aws-cdk-lib';
-import { InstanceClass, InstanceSize, InstanceType, Peer, Port, SecurityGroup, SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
-import { Cluster } from 'aws-cdk-lib/aws-ecs';
-import { NetworkLoadBalancer } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
-import { PrivateDnsNamespace } from 'aws-cdk-lib/aws-servicediscovery';
+import { InstanceClass, InstanceSize, InstanceType, SecurityGroup, SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
 import { Construct } from 'constructs';
 import * as msk from "@aws-cdk/aws-msk-alpha";
 

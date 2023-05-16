@@ -13,13 +13,13 @@ The following AWS architecture consists of two public subnets, each deployed in 
 
 The public subnets host the NLB and NAT Gateways, which provide connectivity to the Internet and enable the private subnets to communicate with external services such as ECR, CloudWatch or other AWS resources. 
 
-The NLB distributes incoming traffic to a pool of target instances running in the private subnets. 
+The NLB distributes incoming traffic to a pool of target ECS tasks running in the private subnets. 
 
-The NAT Gateways allow instances in the private subnet to access the Internet while keeping them protected from direct Internet traffic.
+The NAT Gateways allow ECS tasks in the private subnet to access the Internet while keeping them protected from direct Internet traffic.
 
 The private subnets host the ECS tasks, MSK cluster, and RDS instance. The ECS tasks are launched in a containerized environment using Amazon ECS Fargate.
 
-The architecture is designed for high availability and fault tolerance. By deploying the public subnets in different AZs, the architecture ensures that there is no single point of failure. If one AZ experiences an outage, the other AZ can continue to provide services.
+The architecture is designed for high availability and fault tolerance. By deploying the public an private subnets in different AZs, the architecture ensures that there is no single point of failure. If one AZ experiences an outage, the other AZ can continue to provide services.
 
 ## Prerequisites
 
