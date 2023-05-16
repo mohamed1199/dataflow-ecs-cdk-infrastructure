@@ -6,6 +6,7 @@ import { NetworkLoadBalancer } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
 import { PrivateDnsNamespace } from 'aws-cdk-lib/aws-servicediscovery';
 import { Construct } from 'constructs';
+import { Constants } from './constants';
 
 // extend the props of the stack by adding the vpc type from the VpcStack
 export interface KafkaClientStackProps extends cdk.StackProps {
@@ -32,7 +33,7 @@ export class KafkaClientStack extends cdk.Stack {
             memoryLimitMiB: 512,
         });
 
-        const ecrRepo = Repository.fromRepositoryName(this, "kafka", "kafka");
+        const ecrRepo = Repository.fromRepositoryName(this, "kafka", Constants.kafkaClientEcrRepoName);
 
         const containerDef = taskDef.addContainer("kafkaClient-cd", {
             image: ContainerImage.fromEcrRepository(ecrRepo, "latest"),

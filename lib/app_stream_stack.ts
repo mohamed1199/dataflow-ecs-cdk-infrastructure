@@ -6,6 +6,7 @@ import { NetworkLoadBalancer } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
 import { PrivateDnsNamespace } from 'aws-cdk-lib/aws-servicediscovery';
 import { Construct } from 'constructs';
+import { Constants } from './constants';
 
 export interface AppStreamStackProps extends cdk.StackProps {
     vpc: Vpc;
@@ -26,7 +27,7 @@ export class AppStreamStack extends cdk.Stack {
             memoryLimitMiB: 2048,
         });
 
-        const ecrRepo = Repository.fromRepositoryName(this, "baseimage", "baseimage");
+        const ecrRepo = Repository.fromRepositoryName(this, "baseimage", Constants.appStreamEcrRepoName);
 
         const containerDef1 = taskDef.addContainer("import-stream-cd", {
             image: ContainerImage.fromEcrRepository(ecrRepo, "latest"),

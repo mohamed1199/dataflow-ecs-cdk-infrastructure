@@ -6,6 +6,7 @@ import { NetworkLoadBalancer } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
 import { PrivateDnsNamespace } from 'aws-cdk-lib/aws-servicediscovery';
 import { Construct } from 'constructs';
+import { Constants } from './constants';
 
 export interface DataflowStackProps extends cdk.StackProps {
     vpc: Vpc;
@@ -33,7 +34,7 @@ export class DataflowStack extends cdk.Stack {
             memoryLimitMiB: 2048,
         });
 
-        const ecrRepo = Repository.fromRepositoryName(this, "dataflow", "dataflow");
+        const ecrRepo = Repository.fromRepositoryName(this, "dataflow", Constants.dataflowEcrRepoName);
 
         const containerDef = taskDef.addContainer("dataflow-cd", {
             image: ContainerImage.fromEcrRepository(ecrRepo, "latest"),

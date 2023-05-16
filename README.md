@@ -4,6 +4,7 @@
 
 # The infrastructure from network perspective
 
+
 ![Alt text](images/arch2.jpg?raw=true "infra architecture")
 
 ## About the Architecture

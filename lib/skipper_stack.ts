@@ -6,7 +6,9 @@ import { NetworkLoadBalancer } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { Credentials } from 'aws-cdk-lib/aws-rds';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
 import { PrivateDnsNamespace } from 'aws-cdk-lib/aws-servicediscovery';
+import { constants } from 'buffer';
 import { Construct } from 'constructs';
+import { Constants } from './constants';
 
 
 export interface SkipperStackProps extends cdk.StackProps {
@@ -41,7 +43,7 @@ export class SkipperStack extends cdk.Stack {
             memoryLimitMiB: 1024,
         });
 
-        const ecrRepo = Repository.fromRepositoryName(this, "skipper", "skipper");
+        const ecrRepo = Repository.fromRepositoryName(this, "skipper", Constants.skipperEcrRepoName);
 
         const containerDef = taskDef.addContainer("skipper-cd", {
             image: ContainerImage.fromEcrRepository(ecrRepo, "latest"),
