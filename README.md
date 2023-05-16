@@ -21,6 +21,19 @@ The private subnets host the ECS tasks, MSK cluster, and RDS instance. The ECS t
 
 The architecture is designed for high availability and fault tolerance. By deploying the public an private subnets in different AZs, the architecture ensures that there is no single point of failure. If one AZ experiences an outage, the other AZ can continue to provide services.
 
+## Project Stacks
+
+| Stack Name           | Description                                          |
+|----------------------|------------------------------------------------------|
+| NetworkStack         | Creates the network infrastructure for the project.  |
+| RdsStack             | Sets up the Amazon RDS database for the application. |
+| MskClusterStack      | Creates an Amazon MSK cluster for event streaming.   |
+| SkipperStack         | Configures the Skipper service for deployments.      |
+| DataflowStack        | Sets up the data flow pipeline for processing data.  |
+| KafkaClientStack     | Creates a client application for Kafka interaction.  |
+| AppStreamStack       | Configures Amazon AppStream for application streaming. |
+
+
 ## Prerequisites
 
 Before deploying this project, make sure you have the following prerequisites:
