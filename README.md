@@ -27,8 +27,8 @@ The architecture is designed for high availability and fault tolerance. By deplo
 |----------------------|------------------------------------------------------|
 | NetworkStack         | Creates the network infrastructure for the project.  |
 | RdsStack             | Sets up the Amazon RDS database for the application. |
-| MskClusterStack      | Creates an Amazon MSK cluster for event streaming.   |
-| SkipperStack         | Configures the Skipper service for deployments.      |
+| MskClusterStack      | Creates an Amazon MSK cluster for event streaming with 2 brokers.   |
+| SkipperStack         | Configures the Skipper service for deployment in ECS Faragate.  |
 | DataflowStack        | Configures the Dataflow service for deployments.  |
 | KafkaClientStack     | Creates a client application for Kafka interaction.  |
 | AppStreamStack       | Configures Amazon AppStream for application streaming. |
