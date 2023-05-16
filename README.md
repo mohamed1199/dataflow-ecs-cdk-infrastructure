@@ -29,7 +29,7 @@ The architecture is designed for high availability and fault tolerance. By deplo
 | RdsStack             | Sets up the Amazon RDS database for the application. |
 | MskClusterStack      | Creates an Amazon MSK cluster for event streaming.   |
 | SkipperStack         | Configures the Skipper service for deployments.      |
-| DataflowStack        | Sets up the data flow pipeline for processing data.  |
+| DataflowStack        | Configures the Skipper service for deployments.  |
 | KafkaClientStack     | Creates a client application for Kafka interaction.  |
 | AppStreamStack       | Configures Amazon AppStream for application streaming. |
 
