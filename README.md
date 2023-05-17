@@ -7,7 +7,7 @@
 
 ![Alt text](images/arch2.jpg?raw=true "infra architecture")
 
-## About the Architecture
+## About the Infrastructure
 
 The following AWS architecture consists of two public subnets, each deployed in a different Availability Zone (AZ) and associated with a Network Load Balancer (NLB) and two NAT Gateways. There are also two private subnets associated with an ECS cluster, an Amazon Managed Streaming for Apache Kafka (MSK) cluster, and a Relational Database Service (RDS) instance.
 
@@ -28,8 +28,8 @@ The architecture is designed for high availability and fault tolerance. By deplo
 | NetworkStack         | Creates the network infrastructure for the project.  |
 | RdsStack             | Sets up the Amazon RDS database for the application. |
 | MskClusterStack      | Creates an Amazon MSK cluster for event streaming with 2 brokers.   |
-| SkipperStack         | Configures the Skipper service and deploy it in ECS fargate.  |
-| DataflowStack        | Configures the Dataflow service and deploy it in ECS fargate.  |
+| SkipperStack         | Configures the Skipper service and deploy into ECS fargate.  |
+| DataflowStack        | Configures the Dataflow service and deploy into ECS fargate.  |
 | KafkaClientStack     | Creates a client application for Kafka interaction.  |
 | AppStreamStack       | Configures Amazon AppStream for application streaming. |
 
@@ -51,6 +51,7 @@ To deploy the infrastructure, follow these steps:
    * Clone the repository to your local machine.
    * Open a terminal and navigate to the root folder of the project.
    * Run `npm install` to install the dependencies.
+   * Run `npm i -force @aws-cdk/aws-msk-alpha` to force installing the msk library.
    * Configure your AWS credentials by running aws configure.
    * Run `cdk bootstrap` to create the required resources in your AWS account.
    * Run `cdk deploy --all --require-approval never` to deploy the infrastructure.
