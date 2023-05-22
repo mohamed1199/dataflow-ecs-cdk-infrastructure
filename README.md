@@ -42,6 +42,7 @@ Before deploying this project, make sure you have the following prerequisites:
   * AWS CDK (version 2.73.0 or later) installed on your local machine.
   * An IAM user with the necessary permissions to deploy the infrastructure.
 
+
 ## Deployment
 
 To deploy the infrastructure, follow these steps:
@@ -53,4 +54,9 @@ To deploy the infrastructure, follow these steps:
    * Configure your AWS credentials by running aws configure.
    * Run `cdk bootstrap` to create the required resources in your AWS account.
    * Run `cdk deploy --all --require-approval never` to deploy the infrastructure.
+
+## Deployment Pipeline using Jenkins
+
+![Alt text](images/infra-pipe.jpg?raw=true "Infra Pipeline")
+
 
