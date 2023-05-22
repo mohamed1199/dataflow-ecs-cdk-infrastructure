@@ -4,7 +4,6 @@
 
 # The infrastructure from network perspective
 
-
 ![Alt text](images/arch2.jpg?raw=true "infra architecture")
 
 ## About the Infrastructure
@@ -32,7 +31,6 @@ The architecture is designed for high availability and fault tolerance. By deplo
 | DataflowStack        | Configures the Dataflow service and deploy into ECS fargate.  |
 | KafkaClientStack     | Creates a client application for Kafka interaction.  |
 | AppStreamStack       | Configures Amazon AppStream for application streaming. |
-
 
 ## Prerequisites
 
