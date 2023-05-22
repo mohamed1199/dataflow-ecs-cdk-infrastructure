@@ -11,6 +11,7 @@ pipeline {
     stage('Skipper Configuration') {
       steps {
         withAWS(credentials: 'aws-access-key-id', region: "${REGION}") {
+        sh "aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com"
         sh "aws ecr create-repository --repository-name skipper --region ${REGION}"
         sh "docker pull springcloud/spring-cloud-skipper-server:2.11.0-SNAPSHOT"
         sh "docker tag springcloud/spring-cloud-skipper-server:2.11.0-SNAPSHOT ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/skipper:latest"
