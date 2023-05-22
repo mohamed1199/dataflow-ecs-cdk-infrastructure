@@ -45,24 +45,17 @@ pipeline {
     }
     
     stage('Install Dependencies') {
-            steps {
+         steps {
                 sh "npm install aws-cdk-lib"
                 sh "npm i -force @aws-cdk/aws-msk-alpha"
             }
-        }
-
-    stage('Install Dependencies') {
-            steps {
-                sh "npm install aws-cdk-lib"
-                sh "npm i -force @aws-cdk/aws-msk-alpha"
-            }
-        }    
-
+    }
+   
     stage('Deploy the Infrastructure') {
             steps {
                 sh "cdk bootstrap"
                 sh "cdk deploy --all --require-approval never"
             }
-        }         
+    }         
   }
 }
