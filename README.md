@@ -43,7 +43,7 @@ Before deploying this project, make sure you have the following prerequisites:
   * An IAM user with the necessary permissions to deploy the infrastructure.
 
 
-## Deployment
+## Manual Deployment
 
 To deploy the infrastructure, follow these steps:
 
@@ -55,8 +55,33 @@ To deploy the infrastructure, follow these steps:
    * Run `cdk bootstrap` to create the required resources in your AWS account.
    * Run `cdk deploy --all --require-approval never` to deploy the infrastructure.
 
-## Deployment Pipeline using Jenkins
+## Automatic Deployment using Jenkins
 
 ![Alt text](images/infra-pipe.jpg?raw=true "Infra Pipeline")
+
+This a Jenkins pipeline performs several stages to configure and deploy the full infrastructure. Let's break down each stage:
+
+1. **Skipper Configuration**: This stage sets up the Skipper server, which is part of the Spring Cloud Data Flow platform. It performs the following steps:
+   - Authenticates Docker to the ECR repository using AWS credentials.
+   - Creates an ECR repository named "skipper" in the specified AWS region.
+   - Pulls the Docker image for Spring Cloud Skipper Server version 2.11.0-SNAPSHOT.
+   - Tags the Docker image with the ECR repository URL and the "latest" tag.
+   - Pushes the Docker image to the ECR repository.
+
+2. **Dataflow Configuration**: This stage sets up the Dataflow server, another component of the Spring Cloud Data Flow. It performs similar steps as the Skipper Configuration including creating an ECR repository, pulling the Docker image, tagging it, and pushing it to the ECR repository.
+
+3. **Kafka Configuration**: This stage sets up the Kafka component. It performs similar steps as the previous stages to create an ECR repository, pull the Docker image for the Kafka console, tag it, and push it to the ECR repository.
+
+4. **AppStream Configuration**: This stage sets up the AppStream base image. It performs similar steps as the previous stages to create an ECR repository, pull the Docker image for the Spring Cloud base image version 1.0.4, tag it, and push it to the ECR repository.
+
+5. **Install Dependencies**: This stage installs the required dependencies for the pipeline. It runs two npm commands to install the `aws-cdk-lib` and `@aws-cdk/aws-msk-alpha` packages.
+
+6. **Deploy the Infrastructure**: This stage deploys the infrastructure using the AWS Cloud Development Kit (CDK). It performs the following steps:
+   - Authenticates AWS credentials.
+   - Runs the `cdk bootstrap` command to set up the necessary resources for CDK deployment.
+   - Runs the `cdk deploy` command with the `--all` flag to deploy all resources defined in the CDK stack.
+   - Uses the `--require-approval never` flag to automatically approve the deployment.
+
+
 
 
