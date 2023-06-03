@@ -47,6 +47,7 @@ Before deploying this project, make sure you have the following prerequisites:
 
 To deploy the infrastructure, follow these steps:
 
+   * you need to configure each microservice including creating an ECR repository, pulling the image, tagging it, and pushing it to ECR.
    * Clone the repository to your local machine.
    * Open a terminal and navigate to the root folder of the project.
    * Run `npm install` to install the dependencies.
@@ -70,7 +71,7 @@ This a Jenkins pipeline performs several stages to configure and deploy the full
 
 2. **Dataflow Configuration**: This stage sets up the Dataflow server, another component of the Spring Cloud Data Flow. It performs similar steps as the Skipper Configuration including creating an ECR repository, pulling the Docker image, tagging it, and pushing it to the ECR repository.
 
-3. **Kafka Configuration**: This stage sets up the Kafka component. It performs similar steps as the previous stages to create an ECR repository, pull the Docker image for the Kafka console, tag it, and push it to the ECR repository.
+3. **Kafka Configuration**: This stage sets up the Kafka client. It performs similar steps as the previous stages to create an ECR repository, pull the Docker image for the Kafka console, tag it, and push it to the ECR repository.
 
 4. **AppStream Configuration**: This stage sets up the AppStream base image. It performs similar steps as the previous stages to create an ECR repository, pull the Docker image for the Spring Cloud base image version 1.0.4, tag it, and push it to the ECR repository.
 
@@ -82,6 +83,19 @@ This a Jenkins pipeline performs several stages to configure and deploy the full
    - Runs the `cdk deploy` command with the `--all` flag to deploy all resources defined in the CDK stack.
    - Uses the `--require-approval never` flag to automatically approve the deployment.
 
+## CI/CD Pipeline
 
+![Alt text](images/ci_cd_pipe.png?raw=true "CI/CD Pipeline")
 
+The pipeline consists of several stages, each representing a specific phase of the software delivery process. Here's an overview of the stages:
 
+  - Checkout: This stage checks out the code from the Git repository.
+  - Build: This stage builds the Spring Boot microservice using Gradle.
+  - Test: This stage runs automated tests on the microservice.
+  - Dockerize: This stage creates Docker images for the microservice with custom version tag and latest tag.(technique for preventing tags overwrite)
+  - Push to ECR: This stage pushes the Docker images to the Amazon Elastic Container Registry (ECR).
+  - Update ECS Service: This stage updates the ECS service with a new deployment to the latest version of the Docker image.
+
+The following workflow provides a summary of the updating process in ECS:
+
+![Alt text](images/update_ecs.png?raw=true "ECS Workflow")
